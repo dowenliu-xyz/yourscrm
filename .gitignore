@@ -1,0 +1,5 @@
+.*
+!.env
+!.gitkeep
+!.gitignore
+!.gitlint
