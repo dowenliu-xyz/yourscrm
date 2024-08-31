@@ -1,0 +1,43 @@
+openapi: 3.0.3
+info:
+  title: API Commons
+  description: API Commons
+  version: 1.0.0
+paths: {}
+components:
+  schemas:
+    ResultHeader:
+      description: 响应体标头。通常响应 HTTP 状态 ok 时，不需要检查该响应体标头（批处理请求响应除外）。
+      type: object
+      nullable: false
+      properties:
+        slug:
+          description: 结果标识。等同于状态码，但通常以更表意的短语提供（多个单词以 `-` 相连，无空白字符）
+          type: string
+          nullable: false
+          minLength: 1
+        message:
+          description: 结果说明。相对 slug ，提供更多结果说明信息。
+          type: string
+          nullable: true
+          minLength: 0
+        extra:
+          description: 更多结果信息。
+          type: object
+          nullable: true
+          additionalProperties: true
+      required:
+        - slug
+  examples:
+    SuccessResultHeader:
+      description: 成功结果
+      value:
+        slug: ok
+        message: 操作成功
+    ForbiddenResultHeader:
+      description: 权限不足，操作被禁止
+      value:
+        slug: forbidden
+        message: 权限不足，操作被禁止
+        extra:
+          reason: 当前具有xxx权限，但缺少操作对象的所有权或管理范围不包括该对象。

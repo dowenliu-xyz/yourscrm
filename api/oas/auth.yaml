@@ -1,0 +1,158 @@
+openapi: 3.0.3
+info:
+  title: Auth API
+  description: Auth API
+  version: 1.0.0
+servers:
+  - url: '{schema}://{host}:{port}{basePath}'
+    description: Auth 服务地址
+    variables:
+      schema:
+        description: 协议
+        default: http
+        enum:
+          - http
+          - https
+      host:
+        description: 服务主机地址，域名、主机名或 IP
+        default: localhost
+      port:
+        description: 服务端口号
+        default: "8080"
+      basePath:
+        description: 服务基础路径
+        default: /api/v1/auth
+tags:
+  - name: Auth
+paths:
+  /login:
+    post:
+      description: 登录接口
+      operationId: auth-login
+      requestBody:
+        description: 登录参数
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginParam"
+      responses:
+        200:
+          description: 登录成功响应
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  header:
+                    $ref: "common.yaml#/components/schemas/ResultHeader"
+                  payload:
+                    $ref: "#/components/schemas/LoginSuccessPayload"
+        default:
+          description: 登录出错。详细信息请检查 header。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  header:
+                    $ref: "common.yaml#/components/schemas/ResultHeader"
+      tags:
+        - Auth
+#  /refresh:
+#    post:
+#      description: 刷新 token
+#      operationId: auth-refresh
+#      requestBody:
+#        description: 刷新 token 参数
+#        required: true
+#        content:
+#          application/json:
+#            schema:
+#              type: object
+#              properties:
+#                refreshToken:
+#                  description: 刷新 token
+#                  type: string
+#                  minLength: 1
+#                  nullable: false
+#              required:
+#                - refreshToken
+#      responses:
+#        200:
+#          description: 刷新 token 成功响应
+#          content:
+#            application/json:
+#              schema:
+#                type: object
+#                properties:
+#                  header:
+#                    $ref: "common.yaml#/components/schemas/ResultHeader"
+#                  payload:
+#                    type: object
+#                    properties:
+#                      accessToken:
+#                        description: 访问 token
+#                        type: string
+#                        minLength: 1
+#                        nullable: false
+#                      refreshToken:
+#                        description: 刷新 token
+#                        type: string
+#                        minLength: 1
+#                        nullable: false
+#        default:
+#          description: 刷新 token 出错。详细信息请检查 header。
+#          content:
+#            application/json:
+#              schema:
+#                type: object
+#                properties:
+#                  header:
+#                    $ref: "common.yaml#/components/schemas/ResultHeader"
+#      tags:
+#        - Auth
+components:
+  schemas:
+    LoginParam:
+      description: 登录参数
+      type: object
+      nullable: false
+      properties:
+        login:
+          description: 登录名。可以是用户名、绑定手机号、绑定邮箱
+          type: string
+          minLength: 1
+          nullable: false
+        password:
+          description: 客户端 bcrypt 加密后密码
+          type: string
+          maxLength: 60
+          # TODO 暂时注释掉，方便搭建&测试，前端部分搭好后再打开
+          # minLength: 60
+          nullable: false
+      required:
+        - login
+        - password
+      example:
+        login: jack03
+        password: $2y$10$BFRgXHJU.poYz5bnku8j0eDKj9lOBaI5u1Evbzl9TAvKhmdrbYqjC
+    LoginSuccessPayload:
+      description: 成功登录响应负载
+      type: object
+      nullable: false
+      properties:
+        accessToken:
+          description: 访问 token
+          type: string
+          minLength: 1
+          nullable: false
+        refreshToken:
+          description: 刷新 token
+          type: string
+          minLength: 1
+          nullable: false
+      additionalProperties: true
+      required:
+        - accessToken
+        - refreshToken
