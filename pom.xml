@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.3</version>
+        <relativePath/> <!-- lookup parent from repository -->
+    </parent>
+    <groupId>cn.yourscrm</groupId>
+    <artifactId>yourscrm</artifactId>
+    <name>yourscrm</name>
+    <version>${revision}</version>
+    <packaging>pom</packaging>
+    <properties>
+        <revision>0.0.1-SNAPSHOT</revision>
+        <git-build-hook.version>3.5.0</git-build-hook.version>
+    </properties>
+    <url>https://github.com/dowenliu-xyz/yourscrm</url>
+    <licenses>
+        <license>
+            <name>GNU Affero General Public License v3.0</name>
+            <url>https://www.gnu.org/licenses/agpl-3.0.en.html</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>dowenliu-xyz</name>
+            <email>hawkdowen@hotmail.com</email>
+            <timezone>Asia/Shanghai</timezone>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:https://github.com/dowenliu-xyz/yourscrm.git</connection>
+        <url>https://github.com/dowenliu-xyz/yourscrm</url>
+    </scm>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.rudikershaw.gitbuildhook</groupId>
+                <artifactId>git-build-hook-maven-plugin</artifactId>
+                <version>${git-build-hook.version}</version>
+                <configuration>
+                    <installHooks>
+                        <commit-msg>.githooks/commit-msg</commit-msg>
+                    </installHooks>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>install</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
