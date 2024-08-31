@@ -17,6 +17,10 @@
         <revision>0.0.1-SNAPSHOT</revision>
         <git-build-hook.version>3.5.0</git-build-hook.version>
     </properties>
+    <modules>
+        <module>backend</module>
+        <module>frontend</module>
+    </modules>
     <url>https://github.com/dowenliu-xyz/yourscrm</url>
     <licenses>
         <license>
