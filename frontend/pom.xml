@@ -10,4 +10,38 @@
     </parent>
     <artifactId>frontend</artifactId>
     <packaging>pom</packaging>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-version}</version>
+                <executions>
+                    <execution>
+                        <id>auth_api_gen</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/../api/oas/auth.yaml</inputSpec>
+                            <output>./apis/auth</output>
+                            <configOptions>
+                                <npmName>@yourscrm/auth</npmName>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <generatorName>typescript-fetch</generatorName>
+                    <cleanupOutput>true</cleanupOutput>
+                    <configOptions>
+                        <supportsES6>false</supportsES6>
+                    </configOptions>
+                    <typeMappings>
+                        <typeMapping>integer+int64=string</typeMapping>
+                    </typeMappings>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
