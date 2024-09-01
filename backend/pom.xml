@@ -20,6 +20,7 @@
         <module>apis</module>
         <module>commons</module>
         <module>mono-server</module>
+        <module>commons/single-flight</module>
     </modules>
     <dependencyManagement>
         <dependencies>
