@@ -23,6 +23,7 @@
         <module>commons</module>
         <module>mono-server</module>
         <module>commons/single-flight</module>
+        <module>ops-cli</module>
     </modules>
     <dependencyManagement>
         <dependencies>
