@@ -203,6 +203,11 @@ public class SnowflakeIdGenerator implements IdGenerator {
         }
 
         @Override
+        public boolean isZero() {
+            return asLong() == 0L;
+        }
+
+        @Override
         public boolean equals(Object o) {
             if (this == o) return true;
             if (!(o instanceof ID oid)) return false;

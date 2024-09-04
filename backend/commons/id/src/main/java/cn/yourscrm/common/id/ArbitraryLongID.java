@@ -25,6 +25,11 @@ public class ArbitraryLongID implements ID {
     }
 
     @Override
+    public boolean isZero() {
+        return id == 0L;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ID oid)) return false;

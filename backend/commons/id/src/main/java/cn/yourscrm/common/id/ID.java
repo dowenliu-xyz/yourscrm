@@ -11,6 +11,8 @@ public interface ID {
 
     String asString();
 
+    boolean isZero();
+
     boolean equals(Object o);
 
     int hashCode();

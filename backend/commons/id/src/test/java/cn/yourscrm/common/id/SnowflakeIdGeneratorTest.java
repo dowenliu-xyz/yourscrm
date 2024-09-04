@@ -159,4 +159,11 @@ class SnowflakeIdGeneratorTest {
             assertEquals(100_000, ids.size());
         }
     }
+
+    @Test
+    void zero() {
+        var g = SnowflakeIdGenerator.builder().build();
+        ID id = g.zero();
+        assertTrue(id.isZero());
+    }
 }
