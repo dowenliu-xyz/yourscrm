@@ -10,4 +10,8 @@ public interface ID {
     }
 
     String asString();
+
+    boolean equals(Object o);
+
+    int hashCode();
 }

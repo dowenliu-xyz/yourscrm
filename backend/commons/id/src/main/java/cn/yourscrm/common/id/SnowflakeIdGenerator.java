@@ -5,6 +5,7 @@ import org.jetbrains.annotations.TestOnly;
 import java.net.NetworkInterface;
 import java.security.SecureRandom;
 import java.time.Instant;
+import java.util.Objects;
 
 public class SnowflakeIdGenerator implements IdGenerator {
     private final int epochBits;
@@ -193,6 +194,18 @@ public class SnowflakeIdGenerator implements IdGenerator {
         @Override
         public String asString() {
             return "" + asLong();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (!(o instanceof ID oid)) return false;
+            return Objects.equals(asString(), oid.asString());
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(asString());
         }
     }
 
