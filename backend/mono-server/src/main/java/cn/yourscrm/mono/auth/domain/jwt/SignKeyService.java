@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import java.security.SecureRandom;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
@@ -62,14 +61,17 @@ public class SignKeyService {
                 .filter(k -> !k.canVerifyToken()).map(SignKey::getId).toList();
         signKeyRepo.dropKeys(cleanUpIds);
         publisher.publish();
-        Map<ID, SignKey> map = new HashMap<>();
-        map.put(newKey.getId(), newKey);
-        inMemory.get().forEach((k, v) -> {
-            if (v.canVerifyToken()) {
-                map.put(k, v);
-            }
-        });
-        inMemory.set(Map.copyOf(map));
+        while (true) {
+            var oldMap = inMemory.get();
+            Map<ID, SignKey> map = new HashMap<>();
+            map.put(newKey.getId(), newKey);
+            oldMap.forEach((k, v) -> {
+                if (v.canVerifyToken()) {
+                    map.put(k, v);
+                }
+            });
+            if (inMemory.compareAndSet(oldMap, Map.copyOf(map))) break;
+        }
         return newKey;
     }
 
