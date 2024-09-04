@@ -1,5 +1,6 @@
 package cn.yourscrm.common.id;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.TestOnly;
 
 import java.net.NetworkInterface;
@@ -134,7 +135,7 @@ public class SnowflakeIdGenerator implements IdGenerator {
     }
 
     @Override
-    public synchronized ID nextId() {
+    public synchronized @NotNull ID nextId() {
         long currentTimestamp = Instant.now().toEpochMilli() - customEpoch;
         if (currentTimestamp < lastTimestamp) {
             throw new IllegalStateException("Invalid System Clock!");
@@ -152,6 +153,11 @@ public class SnowflakeIdGenerator implements IdGenerator {
         lastTimestamp = currentTimestamp;
         return new SnowflakeID(
                 currentTimestamp + customEpoch, nodeId, sequence, nodeIdBits, sequenceBits, customEpoch);
+    }
+
+    @Override
+    public @NotNull ID zero() {
+        return new SnowflakeID(customEpoch, 0, 0, nodeIdBits, sequenceBits, customEpoch);
     }
 
     private long waitNextMillis(long currentTimestamp) {
