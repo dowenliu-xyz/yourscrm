@@ -1,5 +1,6 @@
 package cn.yourscrm.mono.auth.adaptor.jwt;
 
+import cn.yourscrm.common.id.ID;
 import cn.yourscrm.mono.auth.domain.jwt.SignKey;
 import cn.yourscrm.mono.auth.domain.jwt.SignKeyRepo;
 import lombok.RequiredArgsConstructor;
@@ -15,16 +16,16 @@ public class DbSignKeyRepo implements SignKeyRepo {
 
     @Override
     public @NotNull Collection<SignKey> loadAll() {
-        return entityRepo.findAll().stream().map(SignKeyMapper.INSTANCE::toDomain).toList();
+        return entityRepo.findAll().stream().map(SignKeyEntity::toDomain).toList();
     }
 
     @Override
     public void newKey(@NotNull SignKey signKey) {
-        entityRepo.save(SignKeyMapper.INSTANCE.toEntity(signKey));
+        entityRepo.save(SignKeyEntity.fromDomain(signKey));
     }
 
     @Override
-    public void dropKeys(@NotNull Collection<Long> ids) {
-        entityRepo.deleteAllById(ids);
+    public void dropKeys(@NotNull Collection<ID> ids) {
+        entityRepo.deleteAllById(ids.stream().map(ID::asLong).toList());
     }
 }

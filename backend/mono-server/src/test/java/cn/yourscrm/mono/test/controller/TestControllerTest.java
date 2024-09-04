@@ -52,16 +52,17 @@ class TestControllerTest {
     }
 
     private String signOpsToken(SignKey signKey) throws JOSEException {
-        JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.HS256).keyID(signKey.id() + "").build();
+        JWSHeader header = new JWSHeader.Builder(JWSAlgorithm.HS256)
+                .keyID(signKey.getId().asString()).build();
         JWTClaimsSet claimsSet = new JWTClaimsSet.Builder().subject("ops")
                 .expirationTime(Date.from(Instant.now().plus(Duration.ofMinutes(10))))
                 .claim("usg", "ops")
                 .build();
         JWSObject jwsObject = new JWSObject(header, claimsSet.toPayload());
-        MACSigner signer = new MACSigner(signKey.secret());
+        MACSigner signer = new MACSigner(signKey.getSecret());
         jwsObject.sign(signer);
         String token = jwsObject.serialize();
-        MACVerifier verifier = new MACVerifier(signKey.secret());
+        MACVerifier verifier = new MACVerifier(signKey.getSecret());
         boolean verify = jwsObject.verify(verifier);
         assertTrue(verify);
         return token;

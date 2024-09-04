@@ -1,5 +1,6 @@
 package cn.yourscrm.mono.auth.security;
 
+import cn.yourscrm.common.id.ArbitraryLongID;
 import cn.yourscrm.mono.auth.domain.jwt.SignKey;
 import cn.yourscrm.mono.auth.domain.jwt.SignKeyService;
 import com.nimbusds.jose.JOSEException;
@@ -54,12 +55,12 @@ public abstract class AbstractJwtAuthenticationProvider implements Authenticatio
         } catch (NumberFormatException e) {
             throw new BadCredentialsException("Invalid JWT");
         }
-        SignKey signKey = signKeyService.findByKeyId(keyId);
+        SignKey signKey = signKeyService.findByKeyId(new ArbitraryLongID(keyId));
         if (signKey == null || !signKey.canVerifyToken()) {
             throw new BadCredentialsException("Invalid JWT");
         }
         try {
-            MACVerifier verifier = new MACVerifier(signKey.secret());
+            MACVerifier verifier = new MACVerifier(signKey.getSecret());
             if (!jwt.verify(verifier)) {
                 throw new BadCredentialsException("Invalid JWT");
             }

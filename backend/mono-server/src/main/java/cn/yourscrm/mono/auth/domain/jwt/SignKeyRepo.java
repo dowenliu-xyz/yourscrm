@@ -1,5 +1,6 @@
 package cn.yourscrm.mono.auth.domain.jwt;
 
+import cn.yourscrm.common.id.ID;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -10,5 +11,5 @@ public interface SignKeyRepo {
 
     void newKey(@NotNull SignKey signKey);
 
-    void dropKeys(@NotNull Collection<Long> ids);
+    void dropKeys(@NotNull Collection<ID> ids);
 }
